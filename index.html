@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>🎁 Pappas bursdagsgave</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#101827,#263a57);color:white;overflow:hidden}
+.page{height:100vh;height:100dvh;display:none;align-items:center;justify-content:center;text-align:center;padding:28px}
+.page.active{display:flex}.card{width:min(520px,100%);padding:35px 25px;border-radius:28px;background:#ffffff12;backdrop-filter:blur(12px);box-shadow:0 10px 50px #0006}
+h1{font-size:clamp(32px,9vw,58px);margin:10px 0 20px}h2{font-size:32px}p{font-size:20px;line-height:1.5}
+button{border:0;border-radius:18px;padding:16px 28px;font-size:20px;font-weight:bold;margin-top:18px;cursor:pointer}
+.next{background:#fff;color:#162238}.hint{font-size:18px;opacity:.9;margin-top:25px}.golf{font-size:70px}
+input{font-size:30px;text-align:center;width:180px;padding:12px;border-radius:14px;border:0}
+#wrong{color:#ffb4b4;min-height:25px}.spark{position:fixed;inset:0;pointer-events:none}
+.confetti{position:absolute;width:10px;height:18px;animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.small{opacity:.75;font-size:15px}
+</style>
+</head>
+<body>
+
+<section class="page active" id="p1"><div class="card">
+<div class="golf">🎉</div><h1>GRATULERER<br>PAPPA!</h1>
+<p>Du har fått en liten bursdagsutfordring. 😎</p>
+<p>Følg sporene for å finne ut hva som venter deg…</p>
+<button class="next" onclick="go(2)">SWIPE / FORTSETT →</button>
+</div></section>
+
+<section class="page" id="p2"><div class="card">
+<div class="golf">⛳</div><h2>Et lite hint… 👀</h2>
+<p>Denne gaven får du litt senere.</p>
+<p>Men når du får den, får du bruk for den til <b>golfen</b>. 😎</p>
+<button class="next" onclick="go(3)">FORTSETT →</button>
+</div></section>
+
+<section class="page" id="p3"><div class="card">
+<div class="golf">🔐</div><h2>Lås opp gaven</h2>
+<p>Skriv inn koden for å fortsette.</p>
+<p class="hint">💡 Hint: Tallet er <b>halvveis til 100</b>.</p>
+<input id="code" inputmode="numeric" maxlength="3" placeholder="???">
+<br><button class="next" onclick="unlock()">LÅS OPP</button>
+<p id="wrong"></p>
+</div></section>
+
+<section class="page" id="p4"><div class="card">
+<div class="golf">🎉⛳🎁</div>
+<h1>DU KLARTE DET!</h1>
+<p>Gratulerer, pappa! 🥳</p>
+<p><b>GAVEN DIN ER:</b></p>
+<div style="margin:22px auto;padding:22px;border-radius:20px;background:#0b3b2e;border:2px solid #f4c542;box-shadow:0 0 30px #f4c54255">
+<div style="font-size:18px;letter-spacing:2px">GOLFSHOPPEN</div>
+<div style="font-size:34px;font-weight:bold;margin:10px 0">GAVEKORT</div>
+<div style="font-size:44px;font-weight:bold">500 KR</div>
+</div>
+<p>Dette gavekortet får du litt senere. 😉<br>God bursdag, pappa! ❤️</p>
+</div><div class="spark" id="spark"></div></section>
+
+<script>
+let current=1;
+function go(n){document.getElementById('p'+current).classList.remove('active');current=n;document.getElementById('p'+current).classList.add('active')}
+function unlock(){
+ const v=document.getElementById('code').value.trim();
+ if(v==='50'){go(4);confetti()}else document.getElementById('wrong').textContent='Nesten! Prøv hintet én gang til 😉';
+}
+function confetti(){
+ const s=document.getElementById('spark');
+ for(let i=0;i<120;i++){
+  const x=document.createElement('i');x.className='confetti';
+  x.style.left=Math.random()*100+'%';x.style.top=(-10-Math.random()*30)+'%';
+  x.style.background=`hsl(${Math.random()*360},90%,65%)`;
+  x.style.animationDelay=Math.random()*1.2+'s';
+  s.appendChild(x);
+ }
+}
+let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX);
+document.addEventListener('touchend',e=>{let dx=e.changedTouches[0].screenX-sx;if(Math.abs(dx)>80&&dx<0&&current<4)go(current+1);});
+</script>
+</body></html>
